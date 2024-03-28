@@ -26,21 +26,23 @@ const logoStyle = {
 
     export default function Footer() {
         return (
-            <Container sx={{position: 'fixed', bottom: 0, left: 0, right: 0, flexDirection: 'column', alignItems: 'center', textAlign: { sm: 'center', md: 'center' } }}>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', borderTop: '1px solid', borderColor: 'divider', }}>
-                    <img src={ 'https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/61f12e6faf73568658154dae_SitemarkDefault.svg' } style={logoStyle} alt="logo of sitemark"/>
-                    <div>
-                        <Link color="text.secondary" href="#">Privacy Policy</Link>
-                        <Typography display="inline" sx={{ mx: 0.5, opacity: 0.5 }}>&nbsp;•&nbsp;</Typography>
-                        <Link color="text.secondary" href="#">Terms of Service</Link>
-                        <Copyright />
-                    </div>
-                    <Stack direction="row" justifyContent="left" spacing={1} useFlexGap sx={{ color: 'text.secondary', }}>
-                        <IconButton color="inherit" href="https://github.com/mui" aria-label="GitHub" sx={{ alignSelf: 'center' }}><FacebookIcon /></IconButton>
-                        <IconButton color="inherit" href="https://twitter.com/MaterialUI" aria-label="X" sx={{ alignSelf: 'center' }}><TwitterIcon /></IconButton>
-                        <IconButton color="inherit" href="https://github.com/mui" aria-label="GitHub" sx={{ alignSelf: 'center' }}><LinkedInIcon /></IconButton>
-                    </Stack>
-                </Box>
-            </Container>
+            <div>
+                <Container sx={{position: 'fixed', bottom: 0, left: 0, right: 0, flexDirection: 'column', alignItems: 'center', textAlign: { sm: 'center', md: 'center' } }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', borderTop: '1px solid', borderColor: 'divider', }}>
+                        <img src={ 'https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/61f12e6faf73568658154dae_SitemarkDefault.svg' } style={logoStyle} alt="logo of sitemark"/>
+                        <div>
+                            <Link color="text.secondary" href="#">Privacy Policy</Link>
+                            <Typography display="inline" sx={{ mx: 0.5, opacity: 0.5 }}>&nbsp;•&nbsp;</Typography>
+                            <Link color="text.secondary" href="#">Terms of Service</Link>
+                            <Copyright />
+                        </div>
+                        <Stack direction="row" justifyContent="left" spacing={1} useFlexGap sx={{ color: 'text.secondary', }}>
+                            <IconButton color="inherit" href="https://github.com/mui" aria-label="GitHub" sx={{ alignSelf: 'center' }}><FacebookIcon /></IconButton>
+                            <IconButton color="inherit" href="https://twitter.com/MaterialUI" aria-label="X" sx={{ alignSelf: 'center' }}><TwitterIcon /></IconButton>
+                            <IconButton color="inherit" href="https://github.com/mui" aria-label="GitHub" sx={{ alignSelf: 'center' }}><LinkedInIcon /></IconButton>
+                        </Stack>
+                    </Box>
+                </Container>
+            </div>
         );
 }
