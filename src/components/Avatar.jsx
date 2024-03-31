@@ -14,6 +14,8 @@ export default function Avatar() {
     const [rotate, setRotate] = useState(0);
     const [scale, setScale] = useState(100);
     const [type, setType] = useState('svg');
+    const [size, setSize] = useState(200);
+
 
     const handleFlip = (event) => {
         setFlip(event.target.checked);
@@ -31,6 +33,10 @@ export default function Avatar() {
         setType(event.target.value);
     };
 
+    const handleSize = (event) => {
+        setSize(event.target.value);
+    };
+
     function handleSetStyleName(name) {
         setSelectedStyle(name);
     }
@@ -38,14 +44,14 @@ export default function Avatar() {
     function handleGenerate() {
         let x = Math.floor(Math.random() * 1000);
         setSeed(x);
-        const uri = `https://api.dicebear.com/8.x/${selectedStyle.toLowerCase().replace(/ /g, '-')}/${type}?flip=${flip}&seed=${seed}&rotate=${rotate}&scale=${scale}`;
+        const uri = `https://api.dicebear.com/8.x/${selectedStyle.toLowerCase().replace(/ /g, '-')}/${type}?flip=${flip}&seed=${seed}&size=${size}&rotate=${rotate}&scale=${scale}`;
         console.log("Generated URI:", uri);
     }
 
     function handleDownload() {
         axios({ 
             method: "get", 
-            url: `https://api.dicebear.com/8.x/${selectedStyle.toLowerCase().replace(/ /g, '-')}/${type}?flip=${flip}&seed=${seed}&rotate=${rotate}&scale=${scale}`,
+            url: `https://api.dicebear.com/8.x/${selectedStyle.toLowerCase().replace(/ /g, '-')}/${type}?flip=${flip}&seed=${seed}&size=${size}&rotate=${rotate}&scale=${scale}`,
             responseType: "arraybuffer"
         }).then((response) => { 
                 var link = document.createElement("a"); 
@@ -53,7 +59,7 @@ export default function Avatar() {
                     new Blob([response.data],  
                     { type: "application/octet-stream" }) 
                 ); 
-                link.download = `${seed}.${type}`; 
+                link.download = `${seed}${size}.${type}`; 
                 document.body.appendChild(link); 
                 link.click(); 
                 setTimeout(function () { 
@@ -101,6 +107,16 @@ export default function Avatar() {
                             <MenuItem value={270}>270</MenuItem>
                         </Select>
                     </FormControl>
+                    <FormControl sx={{ minWidth: 80 }}>
+                        <InputLabel id="demo-simple-select-helper-label">Size</InputLabel>
+                        <Select labelId="avatar-size" id="demo-simple-select-helper" onChange={handleSize} value={size} label="Size">
+                            <MenuItem value={32}>32</MenuItem>
+                            <MenuItem value={48}>48</MenuItem>
+                            <MenuItem value={64}>64</MenuItem>
+                            <MenuItem value={80}>80</MenuItem>
+                            <MenuItem value={196}>196</MenuItem>
+                        </Select>
+                    </FormControl>
                     <FormControlLabel sx={{m:0,border:'1px solid #aeb8c3',borderRadius:'5px',pl:'6px',color:'#41454a','&:hover':{border: '1px solid black'},}} 
                         id="formControl" control={<Switch checked={flip} onChange={handleFlip} color="warning" />
                     } labelPlacement="start" label="Flip Image" />
@@ -115,7 +131,7 @@ export default function Avatar() {
                 </Box>
 
                 <Box sx={{ display: 'flex', justifyContent: 'center', maxHeight: '50vh', m:2 }}>
-                    <img src={`https://api.dicebear.com/8.x/${selectedStyle.toLowerCase().replace(/ /g, '-')}/svg?seed=${seed}&scale=${scale}&rotate=${rotate}&flip=${flip}&`} alt="avatar" />   
+                    <img src={`https://api.dicebear.com/8.x/${selectedStyle.toLowerCase().replace(/ /g, '-')}/svg?seed=${seed}&size=${size}&scale=${scale}&rotate=${rotate}&flip=${flip}&`} alt="avatar" />   
                 </Box>
 
 
