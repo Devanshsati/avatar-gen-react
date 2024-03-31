@@ -3,6 +3,9 @@ import {
     Container, Box, Button, Select, Switch, FormControlLabel, MenuItem,
     InputLabel, FormControl 
 } from "@mui/material";
+import SendIcon from '@mui/icons-material/Send';
+import DownloadingIcon from '@mui/icons-material/Downloading';
+import axios from 'axios';
 
 export default function Avatar() {
     const [selectedStyle, setSelectedStyle] = useState('Adventurer');
@@ -10,7 +13,7 @@ export default function Avatar() {
     const [flip, setFlip] = useState(false);
     const [rotate, setRotate] = useState(0);
     const [scale, setScale] = useState(100);
-    const [color, setColor] = useState('#000000');
+    const [type, setType] = useState('svg');
 
     const handleFlip = (event) => {
         setFlip(event.target.checked);
@@ -24,19 +27,41 @@ export default function Avatar() {
         setScale(event.target.value);
     };
 
+    const handleType = (event) => {
+        setType(event.target.value);
+    };
+
     function handleSetStyleName(name) {
         setSelectedStyle(name);
     }
 
-    const handleColorChange = (color) => {
-        setColor(color.hex);
-    };
-
     function handleGenerate() {
         let x = Math.floor(Math.random() * 1000);
         setSeed(x);
-        const uri = `https://api.dicebear.com/8.x/${selectedStyle.toLowerCase().replace(/ /g, '-')}/svg?flip=${flip}&seed=${x}&rotate=${rotate}&scale=${scale}`;
+        const uri = `https://api.dicebear.com/8.x/${selectedStyle.toLowerCase().replace(/ /g, '-')}/${type}?flip=${flip}&seed=${seed}&rotate=${rotate}&scale=${scale}`;
         console.log("Generated URI:", uri);
+    }
+
+    function handleDownload() {
+        axios({ 
+            method: "get", 
+            url: `https://api.dicebear.com/8.x/${selectedStyle.toLowerCase().replace(/ /g, '-')}/${type}?flip=${flip}&seed=${seed}&rotate=${rotate}&scale=${scale}`,
+            responseType: "arraybuffer"
+        }).then((response) => { 
+                var link = document.createElement("a"); 
+                link.href = window.URL.createObjectURL( 
+                    new Blob([response.data],  
+                    { type: "application/octet-stream" }) 
+                ); 
+                link.download = `${seed}.${type}`; 
+                document.body.appendChild(link); 
+                link.click(); 
+                setTimeout(function () { 
+                    window.URL.revokeObjectURL(link); 
+                }, 200); 
+        }).catch((error) => {
+                    console.error('Error downloading image:', error);
+        });
     }
 
     const styleNames = [
@@ -58,7 +83,6 @@ export default function Avatar() {
                             ))}
                         </Select>
                     </FormControl>
-                    <FormControlLabel sx={{m:0}} id="formControl" control={<Switch checked={flip} onChange={handleFlip} color="warning" />} labelPlacement="start" label="Flip Image" />
                     <FormControl sx={{ minWidth: 80 }}>
                         <InputLabel id="demo-simple-select-helper-label">Scale</InputLabel>
                         <Select labelId="avatar-scale" id="demo-simple-select-helper" onChange={handleScale} value={scale} label="Scale">
@@ -77,16 +101,27 @@ export default function Avatar() {
                             <MenuItem value={270}>270</MenuItem>
                         </Select>
                     </FormControl>
-                    <ColorPicker label="Pick a color" value={color} onChange={handleColorChange} />
+                    <FormControlLabel sx={{m:0,border:'1px solid #aeb8c3',borderRadius:'5px',pl:'6px',color:'#41454a','&:hover':{border: '1px solid black'},}} 
+                        id="formControl" control={<Switch checked={flip} onChange={handleFlip} color="warning" />
+                    } labelPlacement="start" label="Flip Image" />
+                    <FormControl sx={{ minWidth: 80 }}>
+                        <InputLabel id="demo-simple-select-helper-label">Type</InputLabel>
+                        <Select labelId="avatar-type" id="demo-simple-select-helper" onChange={handleType} value={type} label="Type">
+                            <MenuItem value={'svg'}>SVG</MenuItem>
+                            <MenuItem value={'png'}>PNG</MenuItem>
+                            <MenuItem value={'jpg'}>JPG</MenuItem>
+                        </Select>
+                    </FormControl>
                 </Box>
 
-                <Box sx={{ display: 'flex', justifyContent: 'center', maxHeight: '40vh', m:3 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', maxHeight: '50vh', m:2 }}>
                     <img src={`https://api.dicebear.com/8.x/${selectedStyle.toLowerCase().replace(/ /g, '-')}/svg?seed=${seed}&scale=${scale}&rotate=${rotate}&flip=${flip}&`} alt="avatar" />   
                 </Box>
 
 
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', m: 2 }}>
-                    <Button variant="contained" onClick={handleGenerate}>Next</Button>
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', m:2 }}>
+                    <Button sx={{mr:2}} variant="contained" onClick={handleGenerate} endIcon={<SendIcon/>}>Next</Button>
+                    <Button sx={{ml:2}} variant="contained" onClick={handleDownload} endIcon={<DownloadingIcon/>}>Download</Button>
                 </Box>
             </Container>
         </div>
