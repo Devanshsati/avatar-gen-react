@@ -9,13 +9,17 @@ import axios from 'axios';
 
 
 export default function Avatar() {
+
+    const initialSeed = Math.floor(Math.random() * 1000) + 1;
+    const initialSize = Math.floor(Math.random() * 401) + 100; 
+
     const [selectedStyle, setSelectedStyle] = useState('Adventurer');
-    const [seed, setSeed] = useState(1001);
+    const [seed, setSeed] = useState(initialSeed);
     const [flip, setFlip] = useState(false);
     const [rotate, setRotate] = useState(0);
     const [scale, setScale] = useState(100);
     const [type, setType] = useState('svg');
-    const [size, setSize] = useState(250);
+    const [size, setSize] = useState(initialSize);
 
 
     const handleFlip = (event) => {
