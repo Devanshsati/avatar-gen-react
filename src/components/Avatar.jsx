@@ -1,20 +1,21 @@
 import React, { useState } from "react";
 import { 
     Container, Box, Button, Select, Switch, FormControlLabel, MenuItem,
-    InputLabel, FormControl 
+    InputLabel, FormControl, Slider  
 } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
 import DownloadingIcon from '@mui/icons-material/Downloading';
 import axios from 'axios';
 
+
 export default function Avatar() {
     const [selectedStyle, setSelectedStyle] = useState('Adventurer');
-    const [seed, setSeed] = useState(1000);
+    const [seed, setSeed] = useState(1001);
     const [flip, setFlip] = useState(false);
     const [rotate, setRotate] = useState(0);
     const [scale, setScale] = useState(100);
     const [type, setType] = useState('svg');
-    const [size, setSize] = useState(200);
+    const [size, setSize] = useState(250);
 
 
     const handleFlip = (event) => {
@@ -80,12 +81,36 @@ export default function Avatar() {
     return (
         <div>
             <Container sx={{ mt: 5 }}>
-                <Box sx={{display:'flex',flexWrap:'wrap',justifyContent:'space-evenly',m:2, }}>
-                    <FormControl sx={{ minWidth:'190px' }}>
+                <Box sx={{display:'flex',flexWrap:'wrap',justifyContent:'space-evenly', p:0 }}>
+                    {/* <FormControl sx={{ minWidth:'190px' }}>
                         <InputLabel id="demo-simple-select-helper-label">Avatar</InputLabel>
-                        <Select labelId="avatar-style" id="demo-simple-select-helper" value={selectedStyle} onChange={(event) => handleSetStyleName(event.target.value)} label="Avatar">
+                        <Select sx={{}} labelId="avatar-style" id="demo-simple-select-helper" value={selectedStyle} onChange={(event) => handleSetStyleName(event.target.value)} label="Avatar">
                             {styleNames.map((style, index) => (
-                                <MenuItem key={index} value={style}>{style}</MenuItem>
+                                <div sx={{display:'flex', }} key={index}>
+                                    <img src={`https://api.dicebear.com/8.x/${style.toLowerCase().replace(/ /g, '-')}/svg?seed=${seed}`} alt={style} />
+                                    <MenuItem key={index} value={style}>{style}</MenuItem>
+                                </div>
+                            ))}
+                        </Select>
+                    </FormControl> */}
+                    <FormControl sx={{ minWidth: '250px' }}>
+                        <InputLabel id="demo-simple-select-helper-label">Avatar</InputLabel>
+                        <Select labelId="avatar-style" id="demo-simple-select-helper" value={selectedStyle} onChange={(event)=>handleSetStyleName(event.target.value)}label="Avatar"
+                            renderValue={(selected) => (
+                                <div className="custom" sx={{ display: 'flex', alignItems: 'center' }}>
+                                    <span>{selected}</span>
+                                    <img src={`https://api.dicebear.com/8.x/${selected.toLowerCase().replace(/ /g,'-')}/svg?seed=${seed}`}alt={selected}style={{width:'23px'}}/>
+                                </div>
+                            )}>
+                            {styleNames.map((style, index) => (
+                                <MenuItem className="custom" key={index} value={style} sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <span>{style}</span>
+                                    <img
+                                        src={`https://api.dicebear.com/8.x/${style.toLowerCase().replace(/ /g, '-')}/svg?seed=${seed}`}
+                                        alt={style}
+                                        style={{ width: '23px' }}
+                                    />
+                                </MenuItem>
                             ))}
                         </Select>
                     </FormControl>
@@ -107,16 +132,10 @@ export default function Avatar() {
                             <MenuItem value={270}>270</MenuItem>
                         </Select>
                     </FormControl>
-                    <FormControl sx={{ minWidth: 80 }}>
+                    <Box sx={{display:'flex',alignItems:'center',m:0,border:'1px solid #aeb8c3',borderRadius:'5px',px:2,color:'#41454a','&:hover':{border: '1px solid black'},}}>
                         <InputLabel id="demo-simple-select-helper-label">Size</InputLabel>
-                        <Select labelId="avatar-size" id="demo-simple-select-helper" onChange={handleSize} value={size} label="Size">
-                            <MenuItem value={32}>32</MenuItem>
-                            <MenuItem value={48}>48</MenuItem>
-                            <MenuItem value={64}>64</MenuItem>
-                            <MenuItem value={80}>80</MenuItem>
-                            <MenuItem value={196}>196</MenuItem>
-                        </Select>
-                    </FormControl>
+                        <Slider sx={{width:200,ml:1}} aria-label="Temperature" valueLabelDisplay="auto" step={50}value={size}marks color="warning" onChange={handleSize}min={100}max={500}/>
+                    </Box>
                     <FormControlLabel sx={{m:0,border:'1px solid #aeb8c3',borderRadius:'5px',pl:'6px',color:'#41454a','&:hover':{border: '1px solid black'},}} 
                         id="formControl" control={<Switch checked={flip} onChange={handleFlip} color="warning" />
                     } labelPlacement="start" label="Flip Image" />
@@ -130,10 +149,9 @@ export default function Avatar() {
                     </FormControl>
                 </Box>
 
-                <Box sx={{ display: 'flex', justifyContent: 'center', maxHeight: '50vh', m:2 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', minHeight: '50vh',maxHeight: '50vh', m:2 }}>
                     <img src={`https://api.dicebear.com/8.x/${selectedStyle.toLowerCase().replace(/ /g, '-')}/svg?seed=${seed}&size=${size}&scale=${scale}&rotate=${rotate}&flip=${flip}&`} alt="avatar" />   
                 </Box>
-
 
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', m:2 }}>
                     <Button sx={{mr:2}} variant="contained" onClick={handleGenerate} endIcon={<SendIcon/>}>Next</Button>
