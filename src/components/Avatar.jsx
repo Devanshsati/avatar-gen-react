@@ -7,20 +7,28 @@ import SendIcon from '@mui/icons-material/Send';
 import DownloadingIcon from '@mui/icons-material/Downloading';
 import axios from 'axios';
 
+const styleNames = [
+    'Adventurer', 'Adventurer Neutral', 'Avataaars', 'Avataaars Neutral', 'Big Ears', 'Big Ears Neutral', 'Big Smile',
+    'Bottts', 'Bottts Neutral', 'Croodles', 'Croodles Neutral','Fun Emoji', 'Icons', 'Identicon', 'Initials',
+    'Lorelei', 'Lorelei Neutral', 'Micah', 'Miniavs', 'Notionists', 'Notionists Neutral', 'Open Peeps',
+    'Personas', 'Pixel Art', 'Pixel Art Neutral', 'Rings', 'Shapes', 'Thumbs'
+];
 
 export default function Avatar() {
 
     const initialSeed = Math.floor(Math.random() * 1000) + 1;
-    const initialSize = Math.floor(Math.random() * 401) + 100; 
+    const getRandomStyleName = () => {
+        const randomIndex = Math.floor(Math.random() * styleNames.length);
+        return styleNames[randomIndex];
+    };
 
-    const [selectedStyle, setSelectedStyle] = useState('Adventurer');
+    const [selectedStyle, setSelectedStyle] = useState(getRandomStyleName());
     const [seed, setSeed] = useState(initialSeed);
     const [flip, setFlip] = useState(false);
     const [rotate, setRotate] = useState(0);
     const [scale, setScale] = useState(100);
     const [type, setType] = useState('svg');
-    const [size, setSize] = useState(initialSize);
-
+    const [size, setSize] = useState(250);
 
     const handleFlip = (event) => {
         setFlip(event.target.checked);
@@ -74,13 +82,6 @@ export default function Avatar() {
                     console.error('Error downloading image:', error);
         });
     }
-
-    const styleNames = [
-        'Adventurer', 'Adventurer Neutral', 'Avataaars', 'Avataaars Neutral', 'Big Ears', 'Big Ears Neutral', 'Big Smile',
-        'Bottts', 'Bottts Neutral', 'Croodles', 'Croodles Neutral','Fun Emoji', 'Icons', 'Identicon', 'Initials',
-        'Lorelei', 'Lorelei Neutral', 'Micah', 'Miniavs', 'Notionists', 'Notionists Neutral', 'Open Peeps',
-        'Personas', 'Pixel Art', 'Pixel Art Neutral', 'Rings', 'Shapes', 'Thumbs'
-    ];
 
     return (
         <div>
